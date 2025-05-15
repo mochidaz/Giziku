@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.devtools.ksp)
+    kotlin("plugin.serialization") version "2.1.20"
 }
 
 android {
@@ -61,6 +62,8 @@ dependencies {
     implementation(libs.camerax.lifecycle)
     implementation(libs.camerax.camera2)
     implementation(libs.camerax.view)
+    implementation(libs.google.accompanist.permissions)
+    implementation(libs.kotlinx.serialization.json)
     ksp(libs.androidx.room.compiler)
     testImplementation(libs.junit)
 

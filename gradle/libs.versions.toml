@@ -17,6 +17,8 @@ lifecycle = "2.6.1"
 runtimeLivedata = "1.8.0"
 generativeai = "0.9.0"
 cameraX = "1.4.2"
+accompanist = "0.30.1"
+kotlinXSerialization = "1.8.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -47,7 +49,8 @@ camerax-core = { group = "androidx.camera", name = "camera-core" , version.ref =
 camerax-camera2 = { group = "androidx.camera", name = "camera-camera2" , version.ref = "cameraX"}
 camerax-lifecycle = { group = "androidx.camera", name = "camera-lifecycle" , version.ref = "cameraX"}
 camerax-view = { group = "androidx.camera", name = "camera-view" , version.ref = "cameraX"}
-
+google-accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "accompanist" }
+kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinXSerialization" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

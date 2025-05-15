@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material3.Text
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.platform.LocalContext
@@ -15,6 +16,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.giziku.ui.theme.Awal
+import com.example.giziku.ui.theme.CameraView
 import com.example.giziku.ui.theme.DetailAnakScreen
 import com.example.giziku.ui.theme.EditAnakScreen
 import com.example.giziku.ui.theme.EditProfileScreen
@@ -35,10 +37,15 @@ import com.example.giziku.ui.theme.TeacherHomeScreen
 import com.example.giziku.ui.theme.TeacherProfileEditScreen
 import com.example.giziku.ui.theme.TeacherProfileScreen
 import com.example.giziku.ui.theme.TeacherStudentListScreen
+import com.example.giziku.util.CameraViewModel
 import com.example.giziku.util.UserViewModel
 import com.example.giziku.util.UserViewModelFactory
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberPermissionState
 
 class MainActivity : ComponentActivity() {
+    @OptIn(ExperimentalPermissionsApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -46,7 +53,14 @@ class MainActivity : ComponentActivity() {
             val navController = rememberNavController()
             val application = applicationContext as Application
             val userViewModel: UserViewModel = viewModel(factory = UserViewModelFactory(application))
+            val cameraViewModel: CameraViewModel = viewModel()
+            val cameraPermissionState = rememberPermissionState(android.Manifest.permission.CAMERA)
 
+            LaunchedEffect(key1 = cameraPermissionState.status) {
+                if (!cameraPermissionState.status.isGranted) {
+                    cameraPermissionState.launchPermissionRequest()
+                }
+            }
 
             NavHost(navController, startDestination = "awal") {
                 composable("awal") { Awal(navController) }
@@ -95,6 +109,14 @@ class MainActivity : ComponentActivity() {
                 composable("profileorangtua") { OrangtuaProfileScreen(navController) } // Pastikan ini benar
                 composable("editprofileorangtua") { OrangtuaEditProfileScreen(navController) } // Pastikan ini benar
                 composable("detailAnak") { OrangtuaEditProfileScreen(navController) } // Pastikan ini benar
+                composable("kamera") { CameraView(
+                    viewModel = cameraViewModel,
+                ) }
+                composable("resultScreen/{result}") { backStackEntry ->
+                    val result = backStackEntry.arguments?.getString("result")
+                    // Use the result here
+                    Text(text = "Result: $result")
+                }
 
                 composable("detailanak/{id}") { backStackEntry ->
                     val anakId = backStackEntry.arguments?.getString("id")?.toIntOrNull() ?: return@composable
